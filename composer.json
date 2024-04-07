@@ -1,0 +1,21 @@
+{
+    "name": "webchemistry/database-batch",
+    "require": {
+        "php": ">= 8.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "WebChemistry\\DatabaseBatch\\": "src"
+        }
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^1.10",
+        "pestphp/pest": "^2.34",
+        "doctrine/orm": "^3.1"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    }
+}
