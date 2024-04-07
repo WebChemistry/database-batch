@@ -7,6 +7,7 @@ use Stringable;
 use WebChemistry\DatabaseBatch\Bind;
 use WebChemistry\DatabaseBatch\BindType;
 use WebChemistry\DatabaseBatch\Dialect\Dialect;
+use WebChemistry\DatabaseBatch\Type\Helper\TypeFormatter;
 
 final class StringFieldType implements FieldType
 {
@@ -17,8 +18,23 @@ final class StringFieldType implements FieldType
 	{
 	}
 
+	public function getType(): string
+	{
+		return TypeFormatter::format(['string', Stringable::class => $this->acceptStringable]);
+	}
+
 	#[Override]
 	public function toBind(mixed $value, Dialect $dialect): Bind
+	{
+		if ($bind = $this->toNullableBind($value, $dialect)) {
+			return $bind;
+		}
+
+		throw new InvalidTypeException($value, $this->getType());
+	}
+
+	#[Override]
+	public function toNullableBind(mixed $value, Dialect $dialect): ?Bind
 	{
 		if (is_string($value)) {
 			return new Bind($value, BindType::String);
@@ -28,7 +44,12 @@ final class StringFieldType implements FieldType
 			return new Bind((string) $value, BindType::String);
 		}
 
-		throw new InvalidTypeException($value, ['string', Stringable::class => $this->acceptStringable]);
+		return null;
+	}
+
+	public static function accepts(string $type): bool
+	{
+		return $type === 'string';
 	}
 
 }

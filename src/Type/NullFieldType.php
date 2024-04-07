@@ -7,12 +7,12 @@ use WebChemistry\DatabaseBatch\Bind;
 use WebChemistry\DatabaseBatch\BindType;
 use WebChemistry\DatabaseBatch\Dialect\Dialect;
 
-final class BoolFieldType implements FieldType
+final class NullFieldType implements FieldType
 {
 
 	public function getType(): string
 	{
-		return 'bool';
+		return 'null';
 	}
 
 	#[Override]
@@ -22,14 +22,14 @@ final class BoolFieldType implements FieldType
 			return $bind;
 		}
 
-		throw new InvalidTypeException($value, $this->getType());
+		throw new InvalidTypeException($value, 'null');
 	}
 
 	#[Override]
 	public function toNullableBind(mixed $value, Dialect $dialect): ?Bind
 	{
-		if (is_bool($value)) {
-			return new Bind($value, BindType::Bool);
+		if ($value === null) {
+			return new Bind($value, BindType::Null);
 		}
 
 		return null;
@@ -37,7 +37,7 @@ final class BoolFieldType implements FieldType
 
 	public static function accepts(string $type): bool
 	{
-		return $type === 'bool';
+		return $type === 'null';
 	}
 
 }

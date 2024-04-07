@@ -11,6 +11,7 @@ final class Query
 	private array $hooks = [];
 
 	/**
+	 * @param non-empty-string $sql
 	 * @param array<string, Bind> $binds
 	 */
 	public function __construct(
@@ -46,6 +47,9 @@ final class Query
 		return $binds;
 	}
 
+	/**
+	 * @param non-empty-string $sql
+	 */
 	public function withSql(string $sql): self
 	{
 		return (new self($sql, $this->binds, $this->message))

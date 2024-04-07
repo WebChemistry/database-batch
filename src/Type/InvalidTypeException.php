@@ -7,13 +7,10 @@ use Exception;
 final class InvalidTypeException extends Exception
 {
 
-	/**
-	 * @param array<array-key, bool|string>|string $expected
-	 */
-	public function __construct(mixed $value, array|string $expected)
+	public function __construct(mixed $value, string $expected)
 	{
 		parent::__construct(sprintf(
-			'Invalid value %s, expected "%s"', $this->debugValue($value), $this->formatExpected($expected),
+			'Invalid value %s, expected "%s"', $this->debugValue($value), $expected,
 		));
 	}
 
@@ -36,28 +33,6 @@ final class InvalidTypeException extends Exception
 		}
 
 		return get_debug_type($value);
-	}
-
-	/**
-	 * @param array<array-key, bool|string>|string $expected
-	 */
-	private function formatExpected(array|string $expected): string
-	{
-		if (is_string($expected)) {
-			return $expected;
-		}
-
-		$ret = '';
-
-		foreach ($expected as $key => $value) {
-			if (is_int($key)) {
-				$ret .= $value . '|';
-			} else if ($value) {
-				$ret .= $key . '|';
-			}
-		}
-
-		return substr($ret, 0, -1);
 	}
 
 }

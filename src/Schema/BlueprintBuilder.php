@@ -14,8 +14,8 @@ final class BlueprintBuilder
 	private array $ids = [];
 
 	public function __construct(
-		private string $name,
-		private string $tableName,
+		public readonly string $name,
+		public readonly string $tableName,
 	)
 	{
 	}

@@ -6,6 +6,7 @@ use Override;
 use WebChemistry\DatabaseBatch\Bind;
 use WebChemistry\DatabaseBatch\BindType;
 use WebChemistry\DatabaseBatch\Dialect\Dialect;
+use WebChemistry\DatabaseBatch\Type\Helper\TypeFormatter;
 
 final class FloatFieldType implements FieldType
 {
@@ -16,8 +17,23 @@ final class FloatFieldType implements FieldType
 	{
 	}
 
+	public function getType(): string
+	{
+		return TypeFormatter::format(['float', 'int', 'float-string' => $this->acceptString]);
+	}
+
 	#[Override]
 	public function toBind(mixed $value, Dialect $dialect): Bind
+	{
+		if ($bind = $this->toNullableBind($value, $dialect)) {
+			return $bind;
+		}
+
+		throw new InvalidTypeException($value, $this->getType());
+	}
+
+	#[Override]
+	public function toNullableBind(mixed $value, Dialect $dialect): ?Bind
 	{
 		if (is_float($value)) {
 			return new Bind((string) $value, BindType::String);
@@ -31,7 +47,12 @@ final class FloatFieldType implements FieldType
 			return new Bind((string) $value, BindType::String);
 		}
 
-		throw new InvalidTypeException($value, ['float', 'int', 'float-string' => $this->acceptString]);
+		return null;
+	}
+
+	public static function accepts(string $type): bool
+	{
+		return $type === 'float';
 	}
 
 }

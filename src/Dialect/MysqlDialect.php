@@ -2,6 +2,7 @@
 
 namespace WebChemistry\DatabaseBatch\Dialect;
 
+use InvalidArgumentException;
 use Override;
 use WebChemistry\DatabaseBatch\Message;
 use WebChemistry\DatabaseBatch\Packet;
@@ -91,6 +92,10 @@ final class MysqlDialect implements Dialect
 
 		$sql = substr($sql, 0, -1);
 
+		if (!$sql) {
+			throw new InvalidArgumentException('No valid packets');
+		}
+
 		return new Query($sql, $binds, $message);
 	}
 
@@ -119,6 +124,10 @@ final class MysqlDialect implements Dialect
 			$id = $this->platform->escapeColumn($id);
 
 			$sql = sprintf('%s ON DUPLICATE KEY UPDATE %s = %s', $sql, $id, $id);
+		}
+
+		if (!$sql) {
+			throw new InvalidArgumentException('No valid packets');
 		}
 
 		return new Query($sql, $binds, $message);

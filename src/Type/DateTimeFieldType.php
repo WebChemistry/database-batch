@@ -9,6 +9,7 @@ use Throwable;
 use WebChemistry\DatabaseBatch\Bind;
 use WebChemistry\DatabaseBatch\BindType;
 use WebChemistry\DatabaseBatch\Dialect\Dialect;
+use WebChemistry\DatabaseBatch\Type\Helper\TypeFormatter;
 
 final class DateTimeFieldType implements FieldType
 {
@@ -19,8 +20,23 @@ final class DateTimeFieldType implements FieldType
 	{
 	}
 
+	public function getType(): string
+	{
+		return TypeFormatter::format([DateTimeInterface::class, 'date-string' => $this->acceptString]);
+	}
+
 	#[Override]
 	public function toBind(mixed $value, Dialect $dialect): Bind
+	{
+		if ($bind = $this->toNullableBind($value, $dialect)) {
+			return $bind;
+		}
+
+		throw new InvalidTypeException($value, $this->getType());
+	}
+
+	#[Override]
+	public function toNullableBind(mixed $value, Dialect $dialect): ?Bind
 	{
 		if ($value instanceof DateTimeInterface) {
 			return new Bind($value->format($dialect->getPlatform()->getDateTimeFormat()), BindType::String);
@@ -40,7 +56,12 @@ final class DateTimeFieldType implements FieldType
 			}
 		}
 
-		throw new InvalidTypeException($value, [DateTimeInterface::class, 'date-string' => $this->acceptString]);
+		return null;
+	}
+
+	public static function accepts(string $type): bool
+	{
+		return is_a($type, DateTimeInterface::class, true);
 	}
 
 }

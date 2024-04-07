@@ -22,7 +22,7 @@ final class PdoLayer implements Layer
 
 		foreach ($binds as $key => $bind) {
 			$pdoType = match ($bind->type) {
-				BindType::String => PDO::PARAM_STR,
+				BindType::String, BindType::Null => PDO::PARAM_STR,
 				BindType::Int => PDO::PARAM_INT,
 				BindType::Bool => PDO::PARAM_BOOL,
 			};
