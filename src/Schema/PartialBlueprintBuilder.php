@@ -15,17 +15,33 @@ final class PartialBlueprintBuilder
 	/** @var array<string, Column> */
 	private array $fields = [];
 
+	public readonly string $name;
+
+	public readonly string $tableName;
+
 	/**
 	 * @template TClass of object
-	 * @param class-string<TClass> $name
 	 * @param BlueprintMetadata<TClass> $metadata
 	 */
 	public function __construct(
-		public readonly string $name,
-		public readonly string $tableName,
 		private BlueprintMetadata $metadata,
+		?string $name = null,
+		?string $tableName = null,
 	)
 	{
+		$name ??= $metadata->getName();
+		$tableName ??= $metadata->getTableName();
+
+		if (!$name) {
+			throw new InvalidArgumentException('Name must be set.');
+		}
+
+		if (!$tableName) {
+			throw new InvalidArgumentException('Table name must be set.');
+		}
+
+		$this->name = $name;
+		$this->tableName = $tableName;
 	}
 
 	public function addPrimary(string $field, ?FieldType $type = null, ?string $column = null): self
