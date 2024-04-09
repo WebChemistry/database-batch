@@ -11,7 +11,9 @@
     "require-dev": {
         "phpstan/phpstan": "^1.10",
         "pestphp/pest": "^2.34",
-        "doctrine/orm": "^3.1"
+        "doctrine/orm": "^3.1",
+        "cycle/orm": "^2.7",
+        "cycle/annotated": "^4.1"
     },
     "config": {
         "allow-plugins": {

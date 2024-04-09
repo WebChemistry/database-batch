@@ -2,7 +2,7 @@
 
 namespace WebChemistry\DatabaseBatch;
 
-use WebChemistry\DatabaseBatch\Schema\IdColumn;
+use WebChemistry\DatabaseBatch\Schema\PrimaryColumn;
 
 final class Packet
 {
@@ -22,7 +22,7 @@ final class Packet
 	public function getIdBinds(): iterable
 	{
 		foreach ($this->binds as $bind) {
-			if ($bind->column instanceof IdColumn) {
+			if ($bind->column instanceof PrimaryColumn) {
 				yield $bind;
 			}
 		}
@@ -34,7 +34,7 @@ final class Packet
 	public function getBasicBinds(): iterable
 	{
 		foreach ($this->binds as $bind) {
-			if (!$bind->column instanceof IdColumn) {
+			if (!$bind->column instanceof PrimaryColumn) {
 				yield $bind;
 			}
 		}

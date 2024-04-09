@@ -11,7 +11,7 @@ use WebChemistry\DatabaseBatch\Type\StringFieldType;
 
 test('insert', function () {
 	$blueprint = BlueprintBuilder::create('name', 'table')
-		->addId('id', new IntFieldType())
+		->addPrimary('id', new IntFieldType())
 		->addField('name', new StringFieldType())
 		->addField('weight', new FloatFieldType())
 		->addField('birthday', new DateFieldType(true))
@@ -40,7 +40,7 @@ test('insert', function () {
 
 test('insert skip duplications', function () {
 	$blueprint = BlueprintBuilder::create('name', 'table')
-		->addId('id', new IntFieldType())
+		->addPrimary('id', new IntFieldType())
 		->addField('name', new StringFieldType())
 		->addField('weight', new FloatFieldType())
 		->addField('birthday', new DateFieldType(true))
@@ -69,7 +69,7 @@ test('insert skip duplications', function () {
 
 test('insert ignore', function () {
 	$blueprint = BlueprintBuilder::create('name', 'table')
-		->addId('id', new IntFieldType())
+		->addPrimary('id', new IntFieldType())
 		->addField('name', new StringFieldType())
 		->addField('weight', new FloatFieldType())
 		->addField('birthday', new DateFieldType(true))
@@ -98,7 +98,7 @@ test('insert ignore', function () {
 
 test('update', function () {
 	$blueprint = BlueprintBuilder::create('name', 'table')
-		->addId('id', new IntFieldType())
+		->addPrimary('id', new IntFieldType())
 		->addField('name', new StringFieldType())
 		->addField('weight', new FloatFieldType())
 		->addField('birthday', new DateFieldType(true))
@@ -128,7 +128,7 @@ UPDATE table SET `name` = :name_1, `weight` = :weight_1, `birthday` = :birthday_
 
 test('upsert', function () {
 	$blueprint = BlueprintBuilder::create('name', 'table')
-		->addId('id', new IntFieldType())
+		->addPrimary('id', new IntFieldType())
 		->addField('name', new StringFieldType())
 		->addField('weight', new FloatFieldType())
 		->addField('birthday', new DateFieldType(true))

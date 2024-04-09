@@ -7,11 +7,11 @@ use WebChemistry\DatabaseBatch\Type\FieldType;
 final class BlueprintBuilder
 {
 
+	/** @var array<string, PrimaryColumn> */
+	private array $ids = [];
+
 	/** @var array<string, Column> */
 	private array $fields = [];
-
-	/** @var array<string, IdColumn> */
-	private array $ids = [];
 
 	public function __construct(
 		public readonly string $name,
@@ -25,9 +25,9 @@ final class BlueprintBuilder
 		return new self($name, $tableName);
 	}
 
-	public function addId(string $field, FieldType $type, ?string $column = null): self
+	public function addPrimary(string $field, FieldType $type, ?string $column = null): self
 	{
-		$this->ids[$field] = new IdColumn($field, $column ?? $field, $type);
+		$this->ids[$field] = new PrimaryColumn($field, $column ?? $field, $type);
 
 		return $this;
 	}

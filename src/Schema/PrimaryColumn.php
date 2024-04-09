@@ -4,7 +4,7 @@ namespace WebChemistry\DatabaseBatch\Schema;
 
 use LogicException;
 
-final class IdColumn extends Column
+final class PrimaryColumn extends Column
 {
 
 	/**
