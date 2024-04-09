@@ -4,6 +4,10 @@ namespace WebChemistry\DatabaseBatch\Schema\Metadata;
 
 use WebChemistry\DatabaseBatch\Type\FieldType;
 
+/**
+ * @template TClass of object
+ * @implements BlueprintMetadata<TClass>
+ */
 final class SnakeCaseColumnsBlueprintMetadata implements BlueprintMetadata
 {
 
